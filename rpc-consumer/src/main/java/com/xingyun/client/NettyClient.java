@@ -24,7 +24,29 @@ public class NettyClient {
 
     private ChannelFuture channelFuture;
 
-    public NettyClient() {
+    private String host;
+
+    private int port;
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public NettyClient(String host, int port) {
+        this.host =host;
+        this.port = port;
 
         try {
             group = new NioEventLoopGroup();
@@ -42,7 +64,8 @@ public class NettyClient {
                         }
                     });
 
-            channelFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999));
+            channelFuture = bootstrap.connect(new InetSocketAddress(host, port));
+            System.out.println("客户端建立起连接" + host + " : " +port);
         } catch (Exception e) {
             if (null != channelFuture){
                 channelFuture.channel().close();
